@@ -1,0 +1,14 @@
+{
+	"background_color": "#ffffff",
+	"theme_color": "#333333",
+	"name": "road-site",
+	"short_name": "road-site",
+	"display": "minimal-ui",
+	"start_url": "/",
+	"icons": [
+		{
+			"src": "logo-192.jpg",
+			"type": "image/jpg"
+		}
+	]
+}
