@@ -1,20 +1,8 @@
 <script>
 	import Backburger from 'svelte-material-icons/Backburger.svelte';
 	import { Button, Sidepanel } from 'svelte-mui/src';
-	import { goto } from '@sapper/app';
 
 	let visible = false;
-
-	const travel = async route => {
-		await goto(route);
-		visible = false;
-	};
-	const sitemap = [
-		{ title: 'home', route: '/' },
-		{ title: 'hello, frank', route: '/darko' },
-		{ title: 'alter egos', route: '/owls' },
-		{ title: 'contact', route: '/contact' },
-	];
 </script>
 
 <div id="main-nav">
@@ -31,10 +19,17 @@
 	</Button>
 
 	<Sidepanel bind:visible>
-		{#each sitemap as page}
+		<nav>
 			<br />
-			<Button shaped color="#313131" ripple on:click={() => travel(page.route)}>{page.title}</Button>
-		{/each}
+			<a href="/"><Button shaped color="#313131" ripple on:click={() => (visible = false)}>Home</Button></a>
+			<br />
+			<a href="/darko"><Button shaped color="#313131" ripple on:click={() => (visible = false)}>Hello, Frank</Button></a
+			>
+			<br />
+			<a href="/owls"><Button shaped color="#313131" ripple on:click={() => (visible = false)}>Alter Egos</Button></a>
+			<br />
+			<a href="/contact"><Button shaped color="#313131" ripple on:click={() => (visible = false)}>Contact</Button></a>
+		</nav>
 	</Sidepanel>
 </div>
 
