@@ -2,7 +2,12 @@
 	import Backburger from 'svelte-material-icons/Backburger.svelte';
 	import { Button, Sidepanel } from 'svelte-mui/src';
 
+	export let path;
 	let visible = false;
+	let style =
+		path !== '/darko'
+			? 'color:#313131;background-color:#f5f6f7'
+			: 'color:rgba(60, 93, 159, 1.0);background-color:black;';
 </script>
 
 <div id="main-nav">
@@ -21,14 +26,13 @@
 	<Sidepanel bind:visible>
 		<nav>
 			<br />
-			<a href="/"><Button shaped color="#313131" ripple on:click={() => (visible = false)}>Home</Button></a>
+			<a href="/"><Button shaped {style} ripple on:click={() => (visible = false)}>Home</Button></a>
 			<br />
-			<a href="/darko"><Button shaped color="#313131" ripple on:click={() => (visible = false)}>Hello, Frank</Button></a
-			>
+			<a href="/darko"><Button shaped {style} ripple on:click={() => (visible = false)}>Hello, Frank</Button></a>
 			<br />
-			<a href="/owls"><Button shaped color="#313131" ripple on:click={() => (visible = false)}>Alter Egos</Button></a>
+			<a href="/owls"><Button shaped {style} ripple on:click={() => (visible = false)}>Alter Egos</Button></a>
 			<br />
-			<a href="/contact"><Button shaped color="#313131" ripple on:click={() => (visible = false)}>Contact</Button></a>
+			<a href="/contact"><Button shaped {style} ripple on:click={() => (visible = false)}>Contact</Button></a>
 		</nav>
 	</Sidepanel>
 </div>
@@ -43,8 +47,13 @@
 		z-index: 10;
 	}
 
+	a {
+		text-decoration: none;
+		color: #313131;
+	}
+
 	:root {
-		--bg-color: #f5f6f7;
+		/* --bg-color: #f5f6f7; */
 		--button-font-family: 'gentium_basicregular', serif;
 	}
 </style>

@@ -1,20 +1,28 @@
 <script>
 	import { onMount } from 'svelte';
+	import Frank from '@/utils/frank.js';
 
-	let ParticlesComponent;
-
-	onMount(async () => {
-		const module = await import('svelte-particles');
-		ParticlesComponent = module.default;
-	});
+	let ParticlesComponent, particlesContainer, outer;
 
 	$: scale = 2;
 	$: spread = 30;
 	$: density = 400;
 	$: opacity = 0.5;
 	$: particle_opacity = 0.3;
+	$: particle_container_height = 0;
 
+	onMount(async () => {
+		const module = await import('svelte-particles');
+		ParticlesComponent = module.default;
+		particle_container_height = outer.getBoundingClientRect().height;
+	});
+
+	const onParticlesLoaded = e => (particlesContainer = e.detail.particles);
+	const toggleParticles = () => {
+		particle_container_height >= window.scrollY ? particlesContainer.play() : particlesContainer.pause();
+	};
 	const rescale = _ => {
+		particle_container_height = outer.getBoundingClientRect().height;
 		scale = window.innerWidth / window.innerHeight / 1.15;
 		density = scale * 230;
 		if (window.innerWidth < 900) {
@@ -138,7 +146,7 @@
 			},
 			scale: scale,
 			type: 'inline',
-			url: 'https://siasky.net/MABMM3AjHv23LlOmei2-NeODeIpy4orKe0teHTH4C_RZYQ',
+			data: Frank,
 			position: {
 				x: 50,
 				y: 50,
@@ -147,10 +155,15 @@
 	};
 </script>
 
-<svelte:window on:resize={rescale} />
+<svelte:window on:resize={rescale} on:scroll={toggleParticles} />
 
-<div class="darko">
-	<svelte:component this={ParticlesComponent} id="tsparticles" options={particlesConfig} />
+<div class="darko" bind:this={outer}>
+	<svelte:component
+		this={ParticlesComponent}
+		id="tsparticles"
+		options={particlesConfig}
+		on:particlesLoaded={onParticlesLoaded}
+	/>
 </div>
 
 <style>

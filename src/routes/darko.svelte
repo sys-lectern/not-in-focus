@@ -1,3 +1,10 @@
+<script context="module">
+	export async function preload(page) {
+		const { path } = page;
+		return { path };
+	}
+</script>
+
 <script>
 	import Audio from '@/components/Audio.svelte';
 	import AudioToggle from '@/components/AudioToggle.svelte';
@@ -8,6 +15,7 @@
 	import { circInOut } from 'svelte/easing';
 	import { onMount } from 'svelte';
 
+	export let path;
 	let value,
 		muted = false,
 		paused = true,
@@ -109,13 +117,7 @@
 	let frank, frank_pos;
 	$: frank_pos;
 	const repositionFrank = () => (frank_pos = frank.getBoundingClientRect().y);
-
-	$: is_darko = false;
-	const isDarko = () => document.location.pathname.endsWith('darko');
-	onMount(() => {
-		repositionFrank();
-		is_darko = isDarko();
-	});
+	onMount(repositionFrank);
 
 	const togglePause = () => (paused = !paused);
 	const onchange = e => {
@@ -144,8 +146,13 @@
 	};
 	$: its_the_end = false;
 	const isThisTheEnd = _ => {
-		if (document.documentElement.scrollHeight < window.scrollY + window.innerHeight * (4 / 3)) its_the_end = true;
+		if (document.documentElement.scrollHeight < window.scrollY + window.innerHeight * (4 / 3)) {
+			its_the_end = true;
+			window.removeEventListener('scroll', isThisTheEnd);
+		}
 	};
+
+	let style = 'box-shadow:none;-webkit-tap-highlight-color:transparent;';
 </script>
 
 <svelte:head>
@@ -174,7 +181,7 @@
 			<div class="overlay" in:slide={{ easing: circInOut, duration: 1200, delay: 300 }}>
 				{#each pars as par}
 					<div class="par-hover" bind:this={par.el}>
-						<ExpansionPanel name={par.name} bind:group dense style="box-shadow:none;" on:change={onchange}>
+						<ExpansionPanel name={par.name} bind:group dense {style} on:change={onchange}>
 							<span slot="icon" />
 							<p>{@html par.content.replace('{{given_name}}', value)}</p>
 						</ExpansionPanel>
@@ -189,7 +196,7 @@
 	{/if}
 </div>
 
-{#if is_darko}<style>
+{#if path === '/darko'}<style>
 		:root {
 			--color: white;
 			--label: white;

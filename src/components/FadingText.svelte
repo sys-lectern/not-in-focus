@@ -5,8 +5,8 @@
 	import me from 'images/me.jpg';
 
 	import Eye from 'svelte-material-icons/Eye.svelte';
-	import { blur, fade } from 'svelte/transition';
-	import { circOut, bounceIn } from 'svelte/easing';
+	import { blur } from 'svelte/transition';
+	import { circOut } from 'svelte/easing';
 
 	let puppy;
 	$: expandPuppy = false;
@@ -14,16 +14,9 @@
 
 	$: expandMe = false;
 
-	export let win;
+	export let is_chrome_based;
 	let smiley = ':<br />&nbsp;&nbsp;)';
-
-	$: smile_and_wave = false;
-	const timeToWave = _ => {
-		if (document.documentElement.scrollHeight < window.scrollY + window.innerHeight * (6 / 3)) smile_and_wave = true;
-	};
 </script>
-
-<svelte:window on:scroll={timeToWave} />
 
 <div class="text">
 	<h1>A Strongly Worded Letter for the Road</h1>
@@ -134,11 +127,9 @@
 	<div class="david">
 		<span on:click={() => (expandMe = true)}
 			>David
-			{#if smile_and_wave}
-				<figure>
-					<img src={gaywave} alt="Gaywave" id="gaywave" in:fade={{ duration: 600, easing: bounceIn, delay: 120 }} />
-				</figure>
-			{/if}
+			<figure>
+				<img src={gaywave} alt="Gaywave" id="gaywave" />
+			</figure>
 		</span>
 		{#if expandMe}
 			<ImageViewer src={me} alt="me" on:close={() => (expandMe = false)} />
@@ -148,7 +139,7 @@
 	<div class="end-spacer" />
 </div>
 
-{#if win && !!win.chrome}<style>
+{#if is_chrome_based}<style>
 		.text {
 			background-image: linear-gradient(transparent 10%, currentColor 30%, currentColor 70%, transparent 90%);
 			-webkit-background-clip: text;
@@ -202,6 +193,8 @@
 		text-align: center;
 		margin-right: 8px;
 		font-size: 4.8vw;
+		opacity: 0;
+		transition: 0.6s opacity;
 	}
 
 	@media (min-width: 800px) {

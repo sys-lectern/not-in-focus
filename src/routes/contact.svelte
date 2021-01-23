@@ -1,7 +1,7 @@
 <script context="module">
 	export async function preload(page) {
 		const { query } = page;
-		let visible = query.content;
+		let visible = Reflect.has(query, 'content');
 		return { visible };
 	}
 </script>

@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { seekTime, setTime, duration, lock, progress } from '@/audio-stores';
+	import { seekTime, setTime, duration, lock, progress } from '@/utils/audio-stores';
 
 	export let muted, paused, volume, src;
 	let audio_player;

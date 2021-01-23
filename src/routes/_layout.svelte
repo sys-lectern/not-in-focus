@@ -1,9 +1,17 @@
+<script context="module">
+	export async function preload(page) {
+		const { path } = page;
+		return { path };
+	}
+</script>
+
 <script>
 	import GlobalNav from '@/components/GlobalNav.svelte';
+	export let path;
 </script>
 
 <main>
-	<GlobalNav />
+	<GlobalNav {path} />
 	<slot />
 </main>
 

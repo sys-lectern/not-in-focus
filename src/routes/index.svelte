@@ -13,18 +13,26 @@
 
 	import background from 'images/background.jpg';
 
-	let win,
+	let the_end,
 		overlay,
+		is_chrome_based,
+		progress_bar_container,
 		show_tooltip = true,
 		audio_active = false,
 		muted = false,
 		paused = true,
 		volume = 1.0;
 
-	onMount(() => (win = window));
+	onMount(() => {
+		is_chrome_based = window && !!window.chrome;
+		window.setTimeout(() => (overlay.style.opacity = 1), 600);
+	});
 	const togglePause = () => {
 		paused = !paused;
-		if (!audio_active) audio_active = true;
+		if (!audio_active) {
+			audio_active = true;
+			window.setTimeout(() => (progress_bar_container.style.opacity = 1), 600);
+		}
 	};
 
 	const handleKeyPress = e => {
@@ -55,9 +63,9 @@
 		overlay.style['background-color'] = bg === 'rgba(0, 0, 0, 0.5)' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.5)';
 	};
 
-	$: its_the_end = false;
 	const isThisTheEnd = _ => {
-		its_the_end = document.documentElement.scrollHeight < window.scrollY + window.innerHeight * (4 / 3);
+		const discrim = document.documentElement.scrollHeight < window.scrollY + window.innerHeight * (4 / 3);
+		the_end.style.opacity = discrim ? 1 : 0;
 	};
 </script>
 
@@ -73,23 +81,19 @@
 	<div class="body">
 		<AudioToggle on:click={togglePause} {show_tooltip} tip_text="Smokes Quantity" />
 
-		<div class="overlay" bind:this={overlay} in:fade={{ duration: 1200, ease: circInOut, delay: 1200 }}>
+		<div class="overlay" bind:this={overlay}>
 			<div class="toggle-read">
 				<span on:click={toggleReadMode}><BookOpenPageVariant /></span>
 			</div>
-			<FadingText {win} />
+			<FadingText {is_chrome_based} />
 		</div>
 
-		<div class="end">
-			{#if its_the_end}
-				<div in:fade={{ duration: 1200, ease: circInOut }} out:fade={{ duration: 100, ease: circInOut }}>
-					<DownloadButton />
-				</div>
-			{/if}
+		<div class="end" bind:this={the_end}>
+			<DownloadButton />
 		</div>
 
 		{#if audio_active}
-			<span in:fade={{ duration: 1200, ease: circInOut, delay: 1800 }}>
+			<span class="progress-bar-container" bind:this={progress_bar_container}>
 				<ProgressBar />
 			</span>
 		{/if}
@@ -122,6 +126,8 @@
 		width: 100%;
 		transition: 0.1s linear;
 		margin-bottom: 50vh;
+		opacity: 0;
+		transition: 1.2s opacity;
 	}
 
 	.toggle-read {
@@ -141,7 +147,14 @@
 		color: rgba(211, 238, 243, 0.6);
 	}
 
+	.progress-bar-container {
+		opacity: 0;
+		transition: 3s opacity;
+	}
+
 	.end {
 		padding-bottom: 25vh;
+		opacity: 0;
+		transition: 3s opacity;
 	}
 </style>

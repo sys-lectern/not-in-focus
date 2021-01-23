@@ -1,5 +1,5 @@
 <script>
-	import { seekTime, setTime, progress, lock } from '@/audio-stores';
+	import { seekTime, setTime, progress, lock } from '@/utils/audio-stores';
 
 	const click = e => setTime.set(e.clientX / window.innerWidth);
 
