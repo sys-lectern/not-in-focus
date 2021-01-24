@@ -13,30 +13,36 @@
 
 	export let visible;
 	let message = 'subject';
-	$: text_area = '';
 	onMount(() => {
 		if (visible) {
 			window.setTimeout(() => (window.location.search = ''), 3100);
 		}
 	});
 
-	const handleError = e => console.error(e);
-	const handleTextInput = ({ detail }) => {
-		text_area = detail;
+	$: formData = {
+		subject: '',
+		message: '',
 	};
 
-	let myForm;
-	const handleSubmit = e => {
-		e.preventDefault();
-		let formData = new FormData(myForm);
+	const handleError = e => console.error(e);
+	const handleTextInput = ({ detail }) => {
+		formData.message = detail;
+	};
+
+	const encode = data =>
+		Object.keys(data)
+			.map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+			.join('&');
+
+	function handleSubmit() {
 		fetch('/', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: new URLSearchParams(formData).toString(),
+			body: encode({ 'form-name': 'contact', ...formData }),
 		})
-			.then(() => console.log('Form successfully submitted'))
+			.then(() => alert('Success!'))
 			.catch(error => alert(error));
-	};
+	}
 </script>
 
 <svelte:head>
@@ -48,11 +54,11 @@
 <div class="body">
 	<div class="bg">
 		<h1>Contact</h1>
-		<form on:submit={handleSubmit} on:error={handleError} name="contact" data-netlify="true" bind:this={myForm}>
+		<form on:submit={handleSubmit} on:error={handleError} name="contact" data-netlify="true">
 			<span class="text-field">
-				<Textfield {message} messagePersist type="text" name="subject" />
+				<Textfield {message} messagePersist type="text" name="subject" bind:value={formData.subject} />
 				<br />
-				<textarea name="content" type="text" style="display:none">{text_area}</textarea>
+				<textarea name="content" type="text" style="display:none" bind:value={formData.message} />
 				<TextEditor on:keydown={handleTextInput} />
 			</span>
 			<br />
