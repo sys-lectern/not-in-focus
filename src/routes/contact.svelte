@@ -24,6 +24,24 @@
 	const handleTextInput = ({ detail }) => {
 		text_area = detail;
 	};
+
+	const encode = data =>
+		Object.keys(data)
+			.map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+			.join('&');
+
+	const handleSubmit = e => {
+		e.preventDefault();
+		fetch('/', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: encode({
+				'form-name': e.target.getAttribute('name'),
+			}),
+		})
+			.then(() => (visible = true))
+			.catch(e => window.alert(e));
+	};
 </script>
 
 <svelte:head>
@@ -35,7 +53,8 @@
 <div class="body">
 	<div class="bg">
 		<h1>Contact</h1>
-		<form on:error={handleError} name="contact" data-netlify="true">
+		<form on:submit={handleSubmit} on:error={handleError} name="contact" data-netlify="true">
+			<input type="hidden" name="contact" value="pizzaOrder" />
 			<span class="text-field">
 				<Textfield {message} messagePersist type="text" name="subject" />
 				<br />
