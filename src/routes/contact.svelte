@@ -25,22 +25,17 @@
 		text_area = detail;
 	};
 
-	const encode = data =>
-		Object.keys(data)
-			.map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
-			.join('&');
-
+	let myForm;
 	const handleSubmit = e => {
 		e.preventDefault();
+		let formData = new FormData(myForm);
 		fetch('/', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: encode({
-				'form-name': e.target.getAttribute('name'),
-			}),
+			body: new URLSearchParams(formData).toString(),
 		})
-			.then(() => (visible = true))
-			.catch(e => window.alert(e));
+			.then(() => console.log('Form successfully submitted'))
+			.catch(error => alert(error));
 	};
 </script>
 
@@ -53,8 +48,7 @@
 <div class="body">
 	<div class="bg">
 		<h1>Contact</h1>
-		<form on:submit={handleSubmit} on:error={handleError} name="contact" data-netlify="true">
-			<input type="hidden" name="contact" value="pizzaOrder" />
+		<form on:submit={handleSubmit} on:error={handleError} name="contact" data-netlify="true" bind:this={myForm}>
 			<span class="text-field">
 				<Textfield {message} messagePersist type="text" name="subject" />
 				<br />
