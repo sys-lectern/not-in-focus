@@ -25,7 +25,6 @@ form {
 }
 
 input {
-	border-radius: 10px;
 	border-style: none;
 	background-color: #d4d4d4;
 	padding: 7px 5px;
@@ -34,7 +33,6 @@ input {
 }
 
 textarea {
-	border-radius: 10px;
 	border-style: none;
 	background-color: #d4d4d4;
 	padding: 2px 5px;

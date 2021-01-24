@@ -1,7 +1,6 @@
 <script>
 	$: formData = {
-		name: '',
-		email: '',
+		subject: '',
 		message: '',
 	};
 
@@ -25,11 +24,9 @@
 
 <form on:submit={handleSubmit} action="POST" name="contact" data-netlify="true">
 	<input type="hidden" name="form-name" value="contact" />
-	<label for="name">Name</label>
-	<input name="name" placeholder="Full Name Here" type="text" bind:value={formData.name} />
-	<label for="email">Email</label>
-	<input name="email" placeholder="Enter Email Address Here" type="email" bind:value={formData.email} />
+	<label for="subject">Email</label>
+	<input name="subject" placeholder="Subject" type="text" bind:value={formData.subject} />
 	<label for="message">Message</label>
-	<input name="message" placeholder="Enter Message Here" type="message" bind:value={formData.message} />
+	<input name="message" placeholder="It works but its hella ugly" type="message" bind:value={formData.message} />
 	<button type="submit"> Submit </button>
 </form>
