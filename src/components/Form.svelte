@@ -1,5 +1,5 @@
 <script>
-	let formData = {
+	$: formData = {
 		name: '',
 		email: '',
 		message: '',
