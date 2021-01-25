@@ -169,7 +169,7 @@
 	<div class="body" bind:this={frank}>
 		{#if !loaded}
 			<div class="name-input">
-				<Textfield type="text" message="A woman's name?" bind:value on:keyup={submitHandler} />
+				<Textfield messagePersist type="text" message="A woman's name?" bind:value on:keyup={submitHandler} />
 
 				{#if value && value.length}
 					<Button fab outlined icon style="float:right;" on:click={setName}>
