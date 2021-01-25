@@ -24,7 +24,7 @@
 <div class="outer">
 	<form on:submit={handleSubmit} action="POST" name="contact" data-netlify="true">
 		<input type="hidden" name="form-name" value="contact" />
-		<label for="subject">Email</label>
+		<label for="subject">Subject</label>
 		<input name="subject" placeholder="Subject" type="text" bind:value={formData.subject} />
 		<label for="message">Message</label>
 		<input
